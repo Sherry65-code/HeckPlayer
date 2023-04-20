@@ -1,6 +1,7 @@
 from os import system, listdir, name, get_terminal_size
 from sys import exit
 from random import randint
+from mutagen.mp3 import MP3
 
 try:
     from colorama import Fore, Back, Style
@@ -15,6 +16,19 @@ def goToBottom(lines):
         print()
         x+=1
 
+def getRandColor(Fore):
+    rn = randint(0,4)
+    if rn == 0:
+        return Fore.RED
+    elif rn == 1:
+        return Fore.GREEN
+    elif rn == 2:
+        return Fore.YELLOW
+    elif rn == 3:
+        return Fore.MAGENTA
+    else:
+        return Fore.CYAN
+
 def setRandomColorBack():
     rn = randint(0, 4)
     if rn == 0:
@@ -26,18 +40,24 @@ def setRandomColorBack():
     elif rn == 3:
         print(end=f"{Back.MAGENTA}")
     else:
-        print(end=f"{Back.WHITE}")
+        print(end=f"{Back.CYAN}")
     print(end=f"{Style.BRIGHT}")
 
 def clearc():
     print(end=f"{Style.RESET_ALL}")
 
+def getSongLength(songname):
+    songn = MP3(songname)
+    return songn.info.length
+
 def getSongs():
     curdir = listdir()
     x = 0
+    h = 0
     while x<len(curdir):
         if ".mp3" in curdir[x] or ".wav" in curdir[x] or ".m4a" in curdir[x]:
-            print(f"{Fore.RED}{Style.BRIGHT}{chr(215)}{Style.RESET_ALL} {curdir[x].split('.')[0]}")
+            print(f"{Fore.RED}{Style.BRIGHT}{h+1}.{Style.RESET_ALL} {curdir[x].split('.')[0]} [{int(getSongLength(curdir[x])/60)}m:{int(getSongLength(curdir[x])%60)}s]")
+            h+=1
         x+=1
 
 def getSongList():

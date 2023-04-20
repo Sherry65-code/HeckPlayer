@@ -20,6 +20,7 @@ def play():
 def pause():
     mixer.music.pause()
 
+
 def getSongLength():
     global song
     return song.info.length

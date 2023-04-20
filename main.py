@@ -1,11 +1,29 @@
 from music import play, pause, load, stop, unpause, getSongLength
 from music import exit as xit
-from dynamics import goToBottom, getSongList, clearc, clear, isThere, getWidth, getHeight, setRandomColorBack, Fore, Back, Style, system, getSongs
+from dynamics import goToBottom, getSongList, clearc, clear, isThere, getWidth, getHeight, setRandomColorBack, Fore, Back, Style, getSongs
 from time import sleep
 from calligraphy import printl
+from sys import argv
+from os import chdir, system, remove
+try:
+    from climage import convert
+except Exception as e:
+    print("climage module not found")
+    exit(1)
+if len(argv) == 1:
+    print("Too less arguments")
+    xit(1)
+else:
+    songloc = argv[1]
 
+try:
+    chdir(songloc)
+except Exception as e:
+    print("Wrong location")
+    xit(1)
 
 def exit(retcode):
+    remove(".thumbnail.jpg")
     listener_thread.terminate()
     exit(retcode)
 
@@ -86,10 +104,12 @@ try:
 except Exception as e:
     print("Song not found!")
     exit(1)
+maxl = len(getSongList())
 load(getSongList()[si])
 play()
 tstart = 0
 tmin = 0
+
 # start song
 clear()
 # then set top
@@ -108,56 +128,61 @@ th = getHeight()-8
 while x<th:
     print()
     x+=1
-
 progressbar=""
 lefttime=""
 righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
+
+
+#thumbnail download
+#try:
+#    system(f"ffmpeg -i \"{getSongList()[si]}\" -an -c:v copy {songloc}/.thumbnail.jpg &> /dev/null")
+#    ascimg = convert(".thumbnail.jpg")
+#    print(ascimg)
+#except Exception as e:
+#    pass
 
 printl(f"{getSongList()[si].split('.')[0]}")
 
 isPause=False
 isStart=True
-
 while tstart<getSongLength():
-    try:
-        if isPause:
-            continue
-        else:
-            pass
-        # SET PROGRESSBAR LENGTH
-        lefttime=f"{int(tstart/60)}m:{int(tstart%60)}s  "
-        l = len(f"{lefttime}{righttime}")
-        remains = getWidth()-l
-        progressbar = f"{Back.WHITE}"
-        barlength = (tstart/getSongLength())*remains
-        x = 0
-        while x<barlength-1:
-            progressbar+=" "
-            x+=1
-        progressbar+=f"{Style.RESET_ALL}"
-        leftover = remains-barlength
-        x=0
-        los = ""
-        while x<leftover:
-            los += " "
-            x+=1
+        try:
+            if isPause:
+                continue
+            else:
+                pass
+            # SET PROGRESSBAR LENGTH
+            lefttime=f"{int(tstart/60)}m:{int(tstart%60)}s  "
+            l = len(f"{lefttime}{righttime}")
+            remains = getWidth()-l
+            progressbar = f"{Back.WHITE}"
+            barlength = (tstart/getSongLength())*remains
+            x = 0
+            while x<barlength-1:
+                progressbar+=" "
+                x+=1
+            progressbar+=f"{Style.RESET_ALL}"
+            leftover = remains-barlength
+            x=0
+            los = ""
+            while x<leftover:
+                los += " "
+                x+=1
         
-        if tstart > 59:
-            tmin = int(tstart/60)
-            tsec = int(tstart%60)
-        else:
-            tsec = tstart
-        print(end=f"\r{lefttime}{progressbar}{los}{righttime}")
-        tstart+=1
-        sleep(1)
-    except KeyboardInterrupt:
-        clear()
-        print("Exiting")
-        stop()
-        exit(0)
-    except Exception as e:
-        clear()
-        print(e)
-        exit(1)
-clear()
-exit(0)
+            if tstart > 59:
+                tmin = int(tstart/60)
+                tsec = int(tstart%60)
+            else:
+                tsec = tstart
+            print(end=f"\r{lefttime}{progressbar}{los}{righttime}")
+            tstart+=1
+            sleep(1)
+        except KeyboardInterrupt:
+            clear()
+            print("Exiting")
+            stop()
+            exit(0)
+        except Exception as e:
+            clear()
+            print(e)
+            exit(1)
