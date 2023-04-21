@@ -1,156 +1,141 @@
 from music import play, pause, load, stop, unpause, getSongLength
-from music import exit as xit
-from dynamics import goToBottom, getSongList, clearc, clear, isThere, getWidth, getHeight, setRandomColorBack, Fore, Back, Style, getSongs
+from music import exit
+from dynamics import setHeader, goToBottom, getSongList, clearc, clear, isThere, getWidth, getHeight,  Fore, Back, Style, printLines, getSongs
 from time import sleep
 from calligraphy import printl
-from sys import argv
+from sys import argv, stdin
 from os import chdir, system, remove
-try:
-    from climage import convert
-except Exception as e:
-    print("climage module not found")
-    exit(1)
+from meta import getTitle, getArtist, getAlbum, setFileName
+from gcolor import gcolor
+import threading
+import readline
+
+paused = False
+
+# Check for arguments count
+
 if len(argv) == 1:
     print("Too less arguments")
-    xit(1)
+    exit(1)
+elif len(argv) > 2:
+    print("Too many arguments")
+    exit(1)
 else:
     songloc = argv[1]
+
+# if correct arguments then try changing directory into the specified directory, if director not found then report user
 
 try:
     chdir(songloc)
 except Exception as e:
     print("Wrong location")
-    xit(1)
-
-def exit(retcode):
-    remove(".thumbnail.jpg")
-    listener_thread.terminate()
-    exit(retcode)
-
-shouldkey = False
-
-try:
-    from pynput import keyboard
-except Exception as e:
-    print("Pynput module not found")
     exit(1)
 
-import threading
-
-def start_listener():
-    with keyboard.Listener(on_press=control_playback) as listener:
-        listener.join()
-
-def control_playback(key):
-    global isPause, shouldkey
-    if shouldkey:
-        pass
-    else:
-        return
-    if is_terminal_focused():
-        pass
-    else:
-        return
-    if key == keyboard.KeyCode.from_char('k'):
-        if isPause:
-            isPause = False
-            unpause()
-        else:
-            isPause = True
-            pause() 
-    elif key == keyboard.KeyCode.from_char('s') or key == keyboard.KeyCode.from_char('q'):
-        stop()
-        clear()
-        exit(0)
-    else:
-        pass
-listener_thread = threading.Thread(target=start_listener)
-listener_thread.start()
-
-isStart=False
-isPause=True
+# Then display header
 
 clear()
-sw = getWidth()
-setRandomColorBack()
-print("HECKPLAYER", end="")
-sw -= 10
-x = 0
-while x<sw:
-    print(end=" ")
-    x+=1
-clearc()
-print()
+setHeader("HECKPLAYER")
+
+# Then initialize pygame.mixer.music
 
 # intialize
 load()
 
-print("All Songs at current directory")
-getSongs()
+songs = getSongList()
+
+# Then check if songs are avaliable in the spectified directory
+
+if len(songs) == 0:
+    print(f"No Song Found in {songloc}")
+    exit(1)
+else:
+    # If avaliable then print all of the songs that contain the .mp3 or .wav or .m4a title
+    print("All Songs at current directory")
+    getSongs()
+
+# Then ask for song index in the specified list
 
 while True:
     try:
         si = int(input("Song index to play:"))
+        # then decrement the index inorder to fit the tradition of actual array structers
+        si-=1
         break
     except Exception as e:
         print(f"{Fore.RED}{Style.BRIGHT}NOT A INDEX{Style.RESET_ALL}")
-si-=1
+    except KeyboardInterrupt:
+        clear()
+        print("Exiting")
+        exit(0)
+
+
+
+# Verify song avaliablity, if not found then exit the program
+
 try:
-    if isThere(getSongList()[si]):
-        print(f"Playing {getSongList()[si].split('.')[0]}")
-    else:
+    if isThere(songs[si]) == False:
         print("Song not found!")
         exit(1)
 except Exception as e:
     print("Song not found!")
     exit(1)
-maxl = len(getSongList())
-load(getSongList()[si])
-play()
-tstart = 0
-tmin = 0
-
-# start song
-clear()
-# then set top
-sw = getWidth()
-text = f"HECKPLAYER - {getSongList()[si].split('.')[0]}"
-lent = sw-len(text)
-setRandomColorBack()
-x = 0
-print(text, end="")
-while x<lent:
-    print(end=" ")
-    x+=1
-clearc()
-x = 0
-th = getHeight()-8
-while x<th:
-    print()
-    x+=1
-progressbar=""
-lefttime=""
-righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
 
 
-#thumbnail download
-#try:
-#    system(f"ffmpeg -i \"{getSongList()[si]}\" -an -c:v copy {songloc}/.thumbnail.jpg &> /dev/null")
-#    ascimg = convert(".thumbnail.jpg")
-#    print(ascimg)
-#except Exception as e:
-#    pass
-
-printl(f"{getSongList()[si].split('.')[0]}")
-
-isPause=False
-isStart=True
-while tstart<getSongLength():
-        try:
-            if isPause:
-                continue
+def get_input():
+    # get user input uninterruptedly
+    global paused
+    while True:
+        input_char = stdin.read(1)
+        if input_char == "p":
+            if not paused:
+                pause()
+                paused = True
             else:
-                pass
+                unpause()
+                paused = False
+        elif input_char == "q":
+            stop()
+
+# start a new thread to get user input
+input_thread = threading.Thread(target=get_input)
+input_thread.daemon = True
+input_thread.start()
+
+
+while True:
+    # intialize meta package
+    setFileName(songs[si])
+
+    # set song arguments
+    songname = getTitle()
+    songartist = getArtist()
+    songalbum = getAlbum()
+
+    # then start playing the song
+
+    maxl = len(songs)
+    load(songs[si])
+    play()
+    tstart = 0
+    tmin = 0
+
+    clear()
+    # then set header
+    setHeader(f"HECKMUSIC - Playing {songname}")
+    printLines(getHeight()-12)
+    progressbar=""
+    lefttime=""
+    righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
+    
+    printl(f"{songname}")
+    print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
+    print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
+    print()
+
+    while tstart<getSongLength():
+        if paused:
+            continue
+        try:
             # SET PROGRESSBAR LENGTH
             lefttime=f"{int(tstart/60)}m:{int(tstart%60)}s  "
             l = len(f"{lefttime}{righttime}")
@@ -174,7 +159,7 @@ while tstart<getSongLength():
                 tsec = int(tstart%60)
             else:
                 tsec = tstart
-            print(end=f"\r{lefttime}{progressbar}{los}{righttime}")
+            print(f"{lefttime}{progressbar}{los}{righttime}", end="\r", flush=True)
             tstart+=1
             sleep(1)
         except KeyboardInterrupt:
@@ -186,3 +171,9 @@ while tstart<getSongLength():
             clear()
             print(e)
             exit(1)
+
+    # After song gets over
+    if len(songs)-1 == si:
+        si = 0
+    else:
+        si += 1

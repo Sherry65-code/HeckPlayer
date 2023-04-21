@@ -1,7 +1,7 @@
 from os import system, listdir, name, get_terminal_size
 from sys import exit
-from random import randint
 from mutagen.mp3 import MP3
+from gcolor import gcolorb, gcolor
 
 try:
     from colorama import Fore, Back, Style
@@ -16,32 +16,22 @@ def goToBottom(lines):
         print()
         x+=1
 
-def getRandColor(Fore):
-    rn = randint(0,4)
-    if rn == 0:
-        return Fore.RED
-    elif rn == 1:
-        return Fore.GREEN
-    elif rn == 2:
-        return Fore.YELLOW
-    elif rn == 3:
-        return Fore.MAGENTA
-    else:
-        return Fore.CYAN
+def printLines(num):
+    x = 0
+    for x in range(num):
+        print()
 
-def setRandomColorBack():
-    rn = randint(0, 4)
-    if rn == 0:
-       print(end=f"{Back.RED}") 
-    elif rn == 1:
-        print(end=f"{Back.GREEN}")
-    elif rn == 2:
-        print(end=f"{Back.YELLOW}")
-    elif rn == 3:
-        print(end=f"{Back.MAGENTA}")
-    else:
-        print(end=f"{Back.CYAN}")
-    print(end=f"{Style.BRIGHT}")
+def setHeader(headline):
+    print(end=f"{gcolorb}{Style.BRIGHT}")
+    print(end=headline)
+    l = len(headline)
+    tl = getWidth()
+    l = tl-l
+    x = 0
+    for x in range(l):
+        print(end=" ")
+    print()
+    clearc()
 
 def clearc():
     print(end=f"{Style.RESET_ALL}")
@@ -56,7 +46,7 @@ def getSongs():
     h = 0
     while x<len(curdir):
         if ".mp3" in curdir[x] or ".wav" in curdir[x] or ".m4a" in curdir[x]:
-            print(f"{Fore.RED}{Style.BRIGHT}{h+1}.{Style.RESET_ALL} {curdir[x].split('.')[0]} [{int(getSongLength(curdir[x])/60)}m:{int(getSongLength(curdir[x])%60)}s]")
+            print(f"{gcolor}{Style.BRIGHT}{h+1}.{Style.RESET_ALL} {curdir[x].split('.')[0]} [{int(getSongLength(curdir[x])/60)}m:{int(getSongLength(curdir[x])%60)}s]")
             h+=1
         x+=1
 

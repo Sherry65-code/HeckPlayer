@@ -1,8 +1,8 @@
 from sys import exit
 from colorama import Fore, Style
-from dynamics import getRandColor
+from gcolor import gcolor
 
-color = getRandColor(Fore)
+color = gcolor
 
 try:
     import pyfiglet
@@ -12,6 +12,7 @@ except Exception as e:
 
 def printl(text):
     largetext = pyfiglet.figlet_format(text)
-    print(end=f"{color}{Style.BRIGHT}")
+    print(end=f"{gcolor}{Style.BRIGHT}")
     print(largetext)
     print(end=f"{Style.RESET_ALL}")
+    return largetext
