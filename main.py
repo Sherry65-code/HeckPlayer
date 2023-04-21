@@ -8,7 +8,12 @@ from os import chdir, system, remove
 from meta import getTitle, getArtist, getAlbum, setFileName
 from gcolor import gcolor
 import threading
-import readline
+
+try:
+    from pynput import keyboard
+except Exception as e:
+    print("pynput module not found")
+    exit(1)
 
 paused = False
 
@@ -81,26 +86,64 @@ except Exception as e:
     exit(1)
 
 
-def get_input():
-    # get user input uninterruptedly
-    global paused
+def reset():
+    clear()
+    # then set header
+    setHeader(f"HECKMUSIC - Playing {songname}")
+    printLines(getHeight()-12)
+    progressbar=""
+    lefttime=""
+    righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
+    printl(f"{songname}")
+    print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
+    print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
+    print()
+
+# enabling auto loop end
+shouldbreak = False
+
+def nextSong():
+    global songs, si, shouldbreak
+    if len(songs)-1 == si:
+        si = 0
+    else:
+        si+=1
+    shouldbreak = True
+
+def prevSong():
+    global songs, si, shouldbreak
+    if si == 0:
+        si = len(songs)-1
+    else:
+        si-=1
+    shouldbreak = True
+
+runGetKeys = True
+
+def getKeys():
+    global paused, runGetKeys
     while True:
-        input_char = stdin.read(1)
-        if input_char == "p":
-            if not paused:
-                pause()
-                paused = True
-            else:
-                unpause()
-                paused = False
-        elif input_char == "q":
-            stop()
+        if not runGetKeys:
+            break
+        with keyboard.Events() as events:
+            event = events.get(1e6)
+            if event.key == keyboard.Key.f7:
+                    if paused:
+                        reset()
+                        unpause()
+                        paused = False
+                    elif not paused:
+                        reset()
+                        pause()
+                        paused = True
+            elif event.key == keyboard.Key.f8:
+                nextSong()
+            elif event.key == keyboard.Key.f6:
+                prevSong()
+        sleep(0.2)
 
-# start a new thread to get user input
-input_thread = threading.Thread(target=get_input)
-input_thread.daemon = True
-input_thread.start()
-
+key_input_thread = threading.Thread(target=getKeys)
+key_input_thread.start()
 
 while True:
     # intialize meta package
@@ -133,6 +176,8 @@ while True:
     print()
 
     while tstart<getSongLength():
+        if shouldbreak:
+            break
         if paused:
             continue
         try:
@@ -163,6 +208,7 @@ while True:
             tstart+=1
             sleep(1)
         except KeyboardInterrupt:
+            runGetKeys = False
             clear()
             print("Exiting")
             stop()
@@ -171,7 +217,8 @@ while True:
             clear()
             print(e)
             exit(1)
-
+    # Resetting Break mode
+    shouldbreak = False
     # After song gets over
     if len(songs)-1 == si:
         si = 0
