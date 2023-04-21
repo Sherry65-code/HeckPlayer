@@ -1,4 +1,4 @@
-# HeckMusic
+# HeckPlayer
 
 A Music Player for the Great.
 
