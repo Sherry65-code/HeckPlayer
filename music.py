@@ -1,18 +1,17 @@
 from sys import exit
 from dynamics import isThere
+from perror import perror
 
 song = None
 
 try:
     from mutagen.mp3 import MP3
 except Exception as e:
-    print("Install mutagen module")
-    exit(1)
+    perror("mutagen")
 try:
     from pygame import mixer
 except Exception as e:
-    print("Install Pygame module")
-    exit(1)
+    perror("pygame")
 
 def play():
     mixer.music.play()
