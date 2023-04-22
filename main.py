@@ -86,6 +86,8 @@ except Exception as e:
     exit(1)
 
 
+prevwidth = getWidth()
+
 def reset():
     clear()
     # then set header
@@ -97,7 +99,7 @@ def reset():
     printl(f"{songname}")
     print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
     print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
-    print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}  {nextInQue(si, songs)}")
+    print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}   {nextInQue(si, songs)}")
     print()
 
 # enabling auto loop end
@@ -174,10 +176,13 @@ while True:
     printl(f"{songname}")
     print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
     print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
-    print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}  {nextInQue(si, songs)}")
+    print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}   {nextInQue(si, songs)}")
     print()
 
     while tstart<getSongLength():
+        if getWidth() != prevwidth:
+            reset()
+            prevwidth = getWidth()
         if shouldbreak:
             break
         if paused:
