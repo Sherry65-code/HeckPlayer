@@ -2,14 +2,22 @@
 
 A Music Player for the Great.
 
+- Start Menu
+
+  ![](https://github.com/Sherry65-code/HeckPlayer/raw/main/player1.png)
+  
+- Music Playing
+
+  ![](https://github.com/Sherry65-code/HeckPlayer/raw/main/player2.png)
+
 - Advantages
   - Runs in terminal
   - Takes less memory
   - Is less bloated
+  - Cross-Platform
 - Disadvantages
   - Does not have many features
-  - Is unstable
-  - It is not cross-platform
+  - Unstable
 
 - How to run it
   ```bash
@@ -33,3 +41,4 @@ A Music Player for the Great.
     press `F8`
   - To go to previous Song
     press `F6` two times
+
