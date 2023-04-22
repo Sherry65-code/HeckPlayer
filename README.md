@@ -40,5 +40,5 @@ A Music Player for the Great.
   - To go to Next Song
     press `F8`
   - To go to previous Song
-    press `F6` two times
+    press `F6`
 

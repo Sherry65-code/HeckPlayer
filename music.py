@@ -1,6 +1,7 @@
 from sys import exit
 from dynamics import isThere
 from perror import perror
+from meta import setFileName, getTitle
 
 song = None
 
@@ -19,6 +20,13 @@ def play():
 def pause():
     mixer.music.pause()
 
+def nextInQue(si=0, songs=[]):
+    if len(songs)-1 == si:
+        si = 0
+    else:
+        si += 1
+    setFileName(songs[si])
+    return getTitle()
 
 def getSongLength():
     global song

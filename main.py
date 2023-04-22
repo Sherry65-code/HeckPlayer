@@ -1,4 +1,4 @@
-from music import play, pause, load, stop, unpause, getSongLength
+from music import play, pause, load, stop, unpause, getSongLength, nextInQue
 from music import exit
 from dynamics import setHeader, goToBottom, getSongList, clearc, clear, isThere, getWidth, getHeight,  Fore, Back, Style, printLines, getSongs
 from time import sleep
@@ -90,13 +90,14 @@ def reset():
     clear()
     # then set header
     setHeader(f"HECKMUSIC - Playing {songname}")
-    printLines(getHeight()-12)
+    printLines(getHeight()-13)
     progressbar=""
     lefttime=""
     righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
     printl(f"{songname}")
     print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
     print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
+    print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}  {nextInQue(si, songs)}")
     print()
 
 # enabling auto loop end
@@ -165,7 +166,7 @@ while True:
     clear()
     # then set header
     setHeader(f"HECKMUSIC - Playing {songname}")
-    printLines(getHeight()-12)
+    printLines(getHeight()-13)
     progressbar=""
     lefttime=""
     righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
@@ -173,6 +174,7 @@ while True:
     printl(f"{songname}")
     print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
     print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
+    print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}  {nextInQue(si, songs)}")
     print()
 
     while tstart<getSongLength():
@@ -219,8 +221,3 @@ while True:
             exit(1)
     # Resetting Break mode
     shouldbreak = False
-    # After song gets over
-    if len(songs)-1 == si:
-        si = 0
-    else:
-        si += 1

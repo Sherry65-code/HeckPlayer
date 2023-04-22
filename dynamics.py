@@ -2,19 +2,17 @@ from os import system, listdir, name, get_terminal_size
 from sys import exit
 from mutagen.mp3 import MP3
 from gcolor import gcolorb, gcolor
-
+from perror import perror
 try:
     from colorama import Fore, Back, Style
 except Exception as e:
-    print("Run installer file, Module Colorama is not installed or accessible")
-    exit(1)
+    perror("colorama")
 
 def goToBottom(lines):
     x = 0
     l = getHeight()-lines
-    while x<l:
+    for x in range(l):
         print()
-        x+=1
 
 def printLines(num):
     x = 0
@@ -44,22 +42,20 @@ def getSongs():
     curdir = listdir()
     x = 0
     h = 0
-    while x<len(curdir):
+    for x in range(len(curdir)):
         if ".mp3" in curdir[x] or ".wav" in curdir[x] or ".m4a" in curdir[x]:
             print(f"{gcolor}{Style.BRIGHT}{h+1}.{Style.RESET_ALL} {curdir[x].split('.')[0]} [{int(getSongLength(curdir[x])/60)}m:{int(getSongLength(curdir[x])%60)}s]")
             h+=1
-        x+=1
 
 def getSongList():
     curdir = listdir()
     x = 0
     h = 0
     anslist = [""]*len(curdir)
-    while x<len(curdir):
+    for x in range(len(curdir)):
         if ".mp3" in curdir[x] or ".wav" in curdir[x] or ".m4a" in curdir[x]:
             anslist[h] = curdir[x]
             h+=1
-        x+=1
     return anslist 
 
 def clear():
@@ -71,10 +67,9 @@ def clear():
 def isThere(filename):
     curdir = listdir()
     x = 0
-    while x<len(curdir):
+    for x in range(len(curdir)):
         if curdir[x] == filename:
             return True
-        x+=1
     return False
 
 def getWidth():
