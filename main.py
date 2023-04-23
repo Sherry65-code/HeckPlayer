@@ -195,16 +195,14 @@ while True:
             progressbar = f"{Back.WHITE}"
             barlength = (tstart/getSongLength())*remains
             x = 0
-            while x<barlength-1:
+            for x in range(barlength-1):
                 progressbar+=" "
-                x+=1
             progressbar+=f"{Style.RESET_ALL}"
             leftover = remains-barlength
             x=0
             los = ""
-            while x<leftover:
+            for x in range(leftover):
                 los += " "
-                x+=1
         
             if tstart > 59:
                 tmin = int(tstart/60)
