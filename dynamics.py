@@ -8,6 +8,7 @@ try:
 except Exception as e:
     perror("colorama")
 
+
 def goToBottom(lines):
     x = 0
     l = getHeight()-lines

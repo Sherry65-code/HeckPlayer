@@ -189,11 +189,11 @@ while True:
             continue
         try:
             # SET PROGRESSBAR LENGTH
-            lefttime=f"{int(tstart/60)}m:{int(tstart%60)}s  "
+            lefttime=f"{int(round(tstart/60))}m:{round(int(tstart%60))}s  "
             l = len(f"{lefttime}{righttime}")
             remains = getWidth()-l
             progressbar = f"{Back.WHITE}"
-            barlength = (tstart/getSongLength())*remains
+            barlength = int((tstart/getSongLength())*remains)
             x = 0
             for x in range(barlength-1):
                 progressbar+=" "
@@ -218,11 +218,10 @@ while True:
             print("Exiting")
             stop()
             exit(0)
-        except Exception as e:
-            clear()
-            print(e)
-            exit(1)
+        #except Exception as e:
+        #    clear()
+        #    exit(1)
     # Resetting Break mode
-    if tstart == getSongLength():
+    if tstart == int(getSongLength()):
         si+=1
     shouldbreak = False
