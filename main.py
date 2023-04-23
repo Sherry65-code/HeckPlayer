@@ -223,4 +223,6 @@ while True:
             print(e)
             exit(1)
     # Resetting Break mode
+    if tstart == getSongLength():
+        si+=1
     shouldbreak = False
