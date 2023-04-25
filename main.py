@@ -218,10 +218,10 @@ while True:
             print("Exiting")
             stop()
             exit(0)
-        #except Exception as e:
-        #    clear()
-        #    exit(1)
+        except Exception as e:
+            clear()
+            exit(1)
     # Resetting Break mode
-    if tstart == int(getSongLength()):
+    if tstart >= int(getSongLength()):
         si+=1
     shouldbreak = False

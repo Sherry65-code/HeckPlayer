@@ -3,6 +3,7 @@ from sys import exit
 from mutagen.mp3 import MP3
 from gcolor import gcolorb, gcolor
 from perror import perror
+
 try:
     from colorama import Fore, Back, Style
 except Exception as e:
@@ -36,8 +37,14 @@ def clearc():
     print(end=f"{Style.RESET_ALL}")
 
 def getSongLength(songname):
-    songn = MP3(songname)
-    return songn.info.length
+    try:
+        songn = MP3(songname)
+        return songn.info.length
+    except Exception as e:
+        from pygame import mixer
+        mixer.init()
+        mixer.music.load(songname)
+        return mixer.music.get_length()
 
 def getSongs():
     curdir = listdir()
