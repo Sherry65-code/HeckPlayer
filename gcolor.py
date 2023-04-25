@@ -1,4 +1,4 @@
-from colorama import Fore, Back
+import config
 
-gcolor = Fore.RED
-gcolorb = Back.RED
+gcolor = config.TextColor
+gcolorb = config.BackColor

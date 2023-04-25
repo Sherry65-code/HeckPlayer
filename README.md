@@ -34,6 +34,10 @@ A Music Player for the Great.
   pip3 install -r requirements.txt
   ```
 
+- Configuring - 
+
+  Configure the player according to your own will by editing `config.py`
+
 - Key Codes
   - To toggle pause/play
     press `F7`
@@ -41,4 +45,5 @@ A Music Player for the Great.
     press `F8`
   - To go to previous Song
     press `F6`
+
 

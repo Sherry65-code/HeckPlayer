@@ -8,6 +8,7 @@ from os import chdir, system, remove
 from meta import getTitle, getArtist, getAlbum, setFileName
 from gcolor import gcolor
 import threading
+import config
 
 try:
     from pynput import keyboard
@@ -52,7 +53,7 @@ songs = getSongList()
 
 if len(songs) == 0:
     print(f"No Song Found in {songloc}")
-    exit(1)
+    exit(0)
 else:
     # If avaliable then print all of the songs that contain the .mp3 or .wav or .m4a title
     print("All Songs at current directory")
@@ -61,30 +62,27 @@ else:
 # Then ask for song index in the specified list
 
 while True:
-    try:
-        si = int(input("Song index to play:"))
-        # then decrement the index inorder to fit the tradition of actual array structers
-        si-=1
-        break
-    except Exception as e:
-        print(f"{Fore.RED}{Style.BRIGHT}NOT A INDEX{Style.RESET_ALL}")
-    except KeyboardInterrupt:
-        clear()
-        print("Exiting")
-        exit(0)
+    while True:
+        try:
+            si = int(input("Song index to play:"))
+            # then decrement the index inorder to fit the tradition of actual array structers
+            si-=1
+        except Exception as e:
+            print(f"{gcolorb}{Style.BRIGHT}NOT A INDEX{Style.RESET_ALL}")
+        except KeyboardInterrupt:
+            clear()
+            print("Exiting")
+            exit(0)
 
-
-
-# Verify song avaliablity, if not found then exit the program
-
-try:
-    if isThere(songs[si]) == False:
-        print("Song not found!")
-        exit(1)
-except Exception as e:
-    print("Song not found!")
-    exit(1)
-
+        # Verify song avaliablity
+        try:
+            if isThere(songs[si]) == False:
+                print("Song not found!")
+            else:
+                break
+        except Exception as e:
+            print("Song not found!")
+    break
 
 prevwidth = getWidth()
 
@@ -192,11 +190,11 @@ while True:
             lefttime=f"{int(round(tstart/60))}m:{round(int(tstart%60))}s  "
             l = len(f"{lefttime}{righttime}")
             remains = getWidth()-l
-            progressbar = f"{Back.WHITE}"
+            progressbar = f"{config.progressBarColor}"
             barlength = int((tstart/getSongLength())*remains)
             x = 0
             for x in range(barlength-1):
-                progressbar+=" "
+                progressbar+=config.progressBarStyle[0]
             progressbar+=f"{Style.RESET_ALL}"
             leftover = remains-barlength
             x=0
@@ -223,5 +221,8 @@ while True:
             exit(1)
     # Resetting Break mode
     if tstart >= int(getSongLength()):
-        si+=1
+        if si == len(songs)-1:
+            si=0
+        else:
+            si+=1
     shouldbreak = False

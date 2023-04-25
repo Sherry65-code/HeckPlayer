@@ -2,6 +2,7 @@ from sys import exit
 from colorama import Fore, Style
 from gcolor import gcolor
 from perror import perror
+import config
 
 color = gcolor
 
@@ -18,7 +19,10 @@ def printl(text):
     if text == prevs:
         largetext = prev
     else:
-        largetext = pyfiglet.figlet_format(text)
+        if config.bfont == "":
+            largetext = pyfiglet.figlet_format(text)
+        else:
+            largetext = pyfiglet.figlet_format(text, font=config.bfont)
     print(end=f"{gcolor}{Style.BRIGHT}")
     print(largetext)
     print(end=f"{Style.RESET_ALL}")

@@ -3,6 +3,7 @@ from sys import exit
 from mutagen.mp3 import MP3
 from gcolor import gcolorb, gcolor
 from perror import perror
+import config
 
 try:
     from colorama import Fore, Back, Style
@@ -22,6 +23,11 @@ def printLines(num):
         print()
 
 def setHeader(headline):
+    if config.showTitleBar:
+        pass
+    else:
+        print()
+        return
     print(end=f"{gcolorb}{Style.BRIGHT}")
     print(end=headline)
     l = len(headline)
