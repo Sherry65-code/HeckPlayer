@@ -4,11 +4,11 @@ A Music Player for the Great.
 
 - Start Menu
 
-  ![](https://github.com/Sherry65-code/HeckPlayer/raw/main/player1.png)
+  ![](https://raw.githubusercontent.com/Sherry65-code/HeckPlayer/main/player1.png)
   
 - Music Playing
 
-  ![](https://github.com/Sherry65-code/HeckPlayer/raw/main/player2.png)
+  ![](https://raw.githubusercontent.com/Sherry65-code/HeckPlayer/main/player2.png)
 
 - Advantages
   - Runs in terminal
@@ -52,5 +52,6 @@ A Music Player for the Great.
     press `F6`
   - To toggle loop mode on and off
     press `F5`
+
 
 
