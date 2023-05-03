@@ -10,20 +10,26 @@ except Exception as e:
 
 audio = None
 rfilename = None
+ofile = ""
 
 def setFileName(filename):
-    global audio
+    global audio, rfilename, ofile
+    ofile = filename
     try:
         audio = eyed3.load(filename)
     except Exception as e:
         rfilename = filename
 
 def getTitle():
+    global rfilename, filename, ofile
     try:
         return audio.tag.title
     except Exception as e:
         # If the code comes here, then it means the file is not official and its metadata has been removed
-        return rfilename.split('.')[0]
+        try:
+            return ofile.split('.')[0]
+        except Exception as e:
+            return ofile
 
 def getArtist():
     try:

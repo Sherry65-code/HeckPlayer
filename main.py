@@ -7,6 +7,7 @@ from sys import argv, stdin
 from os import chdir, system, remove
 from meta import getTitle, getArtist, getAlbum, setFileName
 from gcolor import gcolor
+from symbols import loop_on, loop_off
 import threading
 import config
 
@@ -87,10 +88,11 @@ while True:
 prevwidth = getWidth()
 
 def reset():
+    global isLoop
     clear()
     # then set header
     setHeader(f"HECKMUSIC - Playing {songname}")
-    printLines(getHeight()-13)
+    printLines(getHeight()-14)
     progressbar=""
     lefttime=""
     righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
@@ -98,7 +100,15 @@ def reset():
     print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
     print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
     print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}   {nextInQue(si, songs)}")
+    if isLoop:
+        loopsymb = loop_on
+    else:
+        loopsymb = loop_off
+    print(f"{gcolor}{Style.BRIGHT}Loop:{Style.RESET_ALL}   {loopsymb}")
     print()
+
+# setting loop variable
+isLoop = False
 
 # enabling auto loop end
 shouldbreak = False
@@ -122,7 +132,7 @@ def prevSong():
 runGetKeys = True
 
 def getKeys():
-    global paused, runGetKeys
+    global paused, runGetKeys, isLoop
     while True:
         if not runGetKeys:
             break
@@ -141,7 +151,13 @@ def getKeys():
                 nextSong()
             elif event.key == keyboard.Key.f6:
                 prevSong()
-        sleep(0.2)
+            elif event.key == keyboard.Key.f5:
+                if isLoop:
+                    isLoop = False
+                else:
+                    isLoop = True
+                reset()
+            sleep(0.2)
 
 key_input_thread = threading.Thread(target=getKeys)
 key_input_thread.start()
@@ -166,7 +182,7 @@ while True:
     clear()
     # then set header
     setHeader(f"HECKMUSIC - Playing {songname}")
-    printLines(getHeight()-13)
+    printLines(getHeight()-14)
     progressbar=""
     lefttime=""
     righttime=f" {int(getSongLength()/60)}m:{int(getSongLength()%60)}s"
@@ -175,6 +191,11 @@ while True:
     print(f"{gcolor}{Style.BRIGHT}Artist:{Style.RESET_ALL} {songartist}")
     print(f"{gcolor}{Style.BRIGHT}Album:{Style.RESET_ALL}  {songalbum}")
     print(f"{gcolor}{Style.BRIGHT}Next:{Style.RESET_ALL}   {nextInQue(si, songs)}")
+    if isLoop:
+        loopsymb = loop_on
+    else:
+        loopsymb = loop_off
+    print(f"{gcolor}{Style.BRIGHT}Loop:{Style.RESET_ALL}   {loopsymb}")
     print()
 
     while tstart<getSongLength():
@@ -220,7 +241,9 @@ while True:
             clear()
             exit(1)
     # Resetting Break mode
-    if tstart >= int(getSongLength()):
+    if isLoop:
+        pass
+    elif tstart >= int(getSongLength()):
         if si == len(songs)-1:
             si=0
         else:
