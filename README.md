@@ -19,6 +19,11 @@ A Music Player for the Great.
   - Does not have many features
   - Unstable
 
+- Cloning the repository
+  ```bash
+  git clone https://github.com/Sherry65-code/HeckPlayer
+  ```
+
 - How to run it
   ```bash
   python3 main.py <location to the directory where your music folder is there>
@@ -45,5 +50,7 @@ A Music Player for the Great.
     press `F8`
   - To go to previous Song
     press `F6`
+  - To toggle loop mode on and off
+    press `F5`
 
 
