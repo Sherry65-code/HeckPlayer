@@ -1,6 +1,5 @@
 from os import system, listdir, name, get_terminal_size
 from sys import exit
-from mutagen.mp3 import MP3
 from gcolor import gcolorb, gcolor
 from perror import perror
 import config
@@ -10,6 +9,10 @@ try:
 except Exception as e:
     perror("colorama")
 
+try:
+    from mutagen.mp3 import MP3
+except Exception as e:
+    perror("mutagen")
 
 def goToBottom(lines):
     x = 0
