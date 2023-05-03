@@ -143,7 +143,7 @@ def getKeys():
                         reset()
                         unpause()
                         paused = False
-                    elif not paused:
+                    else:
                         reset()
                         pause()
                         paused = True
@@ -205,6 +205,7 @@ while True:
         if shouldbreak:
             break
         if paused:
+            sleep(1)
             continue
         try:
             # SET PROGRESSBAR LENGTH
