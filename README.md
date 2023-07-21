@@ -4,8 +4,8 @@ A Music Player for the Great.
 
 - A Demo
 
-  ![](https://lh3.google.com/u/0/d/1lU7ojXbVdfigd65dBoqACBk1Fgd0806e=w1920-h977-iv1)
-  
+[![asciicast](https://asciinema.org/a/U3Ir5b7akssMHpCbJQ220FyYy.svg)](https://asciinema.org/a/U3Ir5b7akssMHpCbJQ220FyYy)
+
 - Advantages
   - Runs in terminal
   - Takes less memory
@@ -49,5 +49,7 @@ A Music Player for the Great.
   - To toggle loop mode on and off
     press `F5`
 
+- Warning
+    Key Codes may not work in wayland.
 
 
