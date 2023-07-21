@@ -2,14 +2,10 @@
 
 A Music Player for the Great.
 
-- Start Menu
+- A Demo
 
-  ![](https://raw.githubusercontent.com/Sherry65-code/HeckPlayer/main/player1.png)
+  ![](https://lh3.google.com/u/0/d/1lU7ojXbVdfigd65dBoqACBk1Fgd0806e=w1920-h977-iv1)
   
-- Music Playing
-
-  ![](https://raw.githubusercontent.com/Sherry65-code/HeckPlayer/main/player2.png)
-
 - Advantages
   - Runs in terminal
   - Takes less memory
