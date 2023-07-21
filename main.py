@@ -1,22 +1,27 @@
 from music import play, pause, load, stop, unpause, getSongLength, nextInQue
-from music import exit
+from music import exit, senddir
 from dynamics import setHeader, goToBottom, getSongList, clearc, clear, isThere, getWidth, getHeight,  Fore, Back, Style, printLines, getSongs
 from time import sleep
 from calligraphy import printl
 from sys import argv, stdin
-from os import chdir, system, remove
+from os import chdir, system, remove, getcwd
 from meta import getTitle, getArtist, getAlbum, setFileName
 from gcolor import gcolor
 from symbols import loop_on, loop_off
 import threading
 import config
 
+isKey = True
+cwd = getcwd()
+senddir(cwd)
+
+
+
 try:
     from pynput import keyboard
 except Exception as e:
     print("pynput module not found")
-    exit(1)
-
+    iskey = False
 paused = False
 
 # Check for arguments count
@@ -132,6 +137,8 @@ def prevSong():
 runGetKeys = True
 
 def getKeys():
+    if not isKey:
+        return
     global paused, runGetKeys, isLoop
     while True:
         if not runGetKeys:
@@ -245,6 +252,7 @@ while True:
     if isLoop:
         pass
     elif tstart >= int(getSongLength()):
+        stop()
         if si == len(songs)-1:
             si=0
         else:

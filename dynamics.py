@@ -50,10 +50,10 @@ def getSongLength(songname):
         songn = MP3(songname)
         return songn.info.length
     except Exception as e:
-        from pygame import mixer
-        mixer.init()
-        mixer.music.load(songname)
-        return mixer.music.get_length()
+        #from pygame import mixer
+        #mixer.init()
+        #mixer.music.load(songname)
+        return 100
 
 def getSongs():
     curdir = listdir()
