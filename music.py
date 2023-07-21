@@ -3,6 +3,8 @@ from dynamics import isThere
 from perror import perror
 from meta import setFileName, getTitle
 import ctypes
+import wave
+import contextlib
 
 song = None
 songfile = ""
@@ -38,7 +40,21 @@ def nextInQue(si=0, songs=[]):
 
 def getSongLength():
     global song
-    return song.info.length
+    try:
+        return song.info.length
+    except Exception as e:
+        try:
+            f = open("songname.txt", "r")
+            wvn = f.read()
+            f.close()
+            with contextlib.closing(wave.open(f"{wvn}",'r')) as f:
+                frames = f.getnframes()
+                rate = f.getframerate()
+                duration = frames / float(rate)
+                return int(duration)
+        except Exception as e:
+            print(e)
+            exit(1)
 
 def load(musicname=""):
     global song, lib
@@ -52,7 +68,10 @@ def load(musicname=""):
         pass
     # load music file
     if isThere(musicname):
-        song = MP3(musicname)
+        try:
+            song = MP3(musicname)
+        except Exception as e:
+            pass
         f = open("songname.txt", "w")
         f.write(musicname)
         f.close()
