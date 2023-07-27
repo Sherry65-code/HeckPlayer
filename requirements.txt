@@ -1,14 +1,9 @@
 colorama==0.4.6
 coverage==5.5
 deprecation==2.1.0
-evdev==1.6.1
 eyed3==0.9.7
 filetype==1.2.0
 mutagen==1.46.0
 packaging==23.1
 pyfiglet==0.8.post1
-pygame==2.4.0
-pynput==1.7.6
-python-xlib==0.33
-six==1.16.0
 toml==0.10.2

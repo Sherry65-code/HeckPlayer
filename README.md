@@ -32,7 +32,8 @@ A Music Player for the Great.
 
 - How to install dependencies -
   ```bash
-  pip3 install -r requirements.txt
+  pip install -r requirements.txt
+  make
   ```
 
 - Configuring - 
