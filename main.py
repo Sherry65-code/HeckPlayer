@@ -27,7 +27,7 @@ paused = False
 # Check for arguments count
 
 if len(argv) == 1:
-    print("Too less arguments")
+    print("Too less arguments.\nRun like this - python3 main.py [DIRECTORY WHERE ALL AUDIO IS THERE]")
     exit(1)
 elif len(argv) > 2:
     print("Too many arguments")
