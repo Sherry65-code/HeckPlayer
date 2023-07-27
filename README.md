@@ -49,7 +49,8 @@ A Music Player for the Great.
   - To toggle loop mode on and off
     press `F5`
 
-- Warning
-    Key Codes may not work in wayland.
+> **Warning**
+>
+> Key Codes may not work in wayland.
 
 
